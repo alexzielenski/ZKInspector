@@ -1,0 +1,413 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FAC2622319980FD800EED86A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FAC2622219980FD800EED86A /* main.m */; };
+		FAC2622619980FD800EED86A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FAC2622519980FD800EED86A /* AppDelegate.m */; };
+		FAC2622819980FD800EED86A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAC2622719980FD800EED86A /* Images.xcassets */; };
+		FAC2622B19980FD800EED86A /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAC2622919980FD800EED86A /* MainMenu.xib */; };
+		FAC2623719980FD800EED86A /* ZKInspectorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FAC2623619980FD800EED86A /* ZKInspectorTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FAC2623119980FD800EED86A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FAC2621519980FD800EED86A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FAC2621C19980FD800EED86A;
+			remoteInfo = ZKInspector;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		FAC2621D19980FD800EED86A /* ZKInspector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZKInspector.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FAC2622119980FD800EED86A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FAC2622219980FD800EED86A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		FAC2622419980FD800EED86A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		FAC2622519980FD800EED86A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		FAC2622719980FD800EED86A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		FAC2622A19980FD800EED86A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		FAC2623019980FD800EED86A /* ZKInspectorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZKInspectorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FAC2623519980FD800EED86A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FAC2623619980FD800EED86A /* ZKInspectorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZKInspectorTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FAC2621A19980FD800EED86A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FAC2622D19980FD800EED86A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FAC2621419980FD800EED86A = {
+			isa = PBXGroup;
+			children = (
+				FAC2621F19980FD800EED86A /* ZKInspector */,
+				FAC2623319980FD800EED86A /* ZKInspectorTests */,
+				FAC2621E19980FD800EED86A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FAC2621E19980FD800EED86A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FAC2621D19980FD800EED86A /* ZKInspector.app */,
+				FAC2623019980FD800EED86A /* ZKInspectorTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FAC2621F19980FD800EED86A /* ZKInspector */ = {
+			isa = PBXGroup;
+			children = (
+				FAC2622419980FD800EED86A /* AppDelegate.h */,
+				FAC2622519980FD800EED86A /* AppDelegate.m */,
+				FAC2622719980FD800EED86A /* Images.xcassets */,
+				FAC2622919980FD800EED86A /* MainMenu.xib */,
+				FAC2622019980FD800EED86A /* Supporting Files */,
+			);
+			path = ZKInspector;
+			sourceTree = "<group>";
+		};
+		FAC2622019980FD800EED86A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				FAC2622119980FD800EED86A /* Info.plist */,
+				FAC2622219980FD800EED86A /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		FAC2623319980FD800EED86A /* ZKInspectorTests */ = {
+			isa = PBXGroup;
+			children = (
+				FAC2623619980FD800EED86A /* ZKInspectorTests.m */,
+				FAC2623419980FD800EED86A /* Supporting Files */,
+			);
+			path = ZKInspectorTests;
+			sourceTree = "<group>";
+		};
+		FAC2623419980FD800EED86A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				FAC2623519980FD800EED86A /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FAC2621C19980FD800EED86A /* ZKInspector */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FAC2623A19980FD800EED86A /* Build configuration list for PBXNativeTarget "ZKInspector" */;
+			buildPhases = (
+				FAC2621919980FD800EED86A /* Sources */,
+				FAC2621A19980FD800EED86A /* Frameworks */,
+				FAC2621B19980FD800EED86A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ZKInspector;
+			productName = ZKInspector;
+			productReference = FAC2621D19980FD800EED86A /* ZKInspector.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FAC2622F19980FD800EED86A /* ZKInspectorTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FAC2623D19980FD800EED86A /* Build configuration list for PBXNativeTarget "ZKInspectorTests" */;
+			buildPhases = (
+				FAC2622C19980FD800EED86A /* Sources */,
+				FAC2622D19980FD800EED86A /* Frameworks */,
+				FAC2622E19980FD800EED86A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FAC2623219980FD800EED86A /* PBXTargetDependency */,
+			);
+			name = ZKInspectorTests;
+			productName = ZKInspectorTests;
+			productReference = FAC2623019980FD800EED86A /* ZKInspectorTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FAC2621519980FD800EED86A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0600;
+				ORGANIZATIONNAME = "Alexander Zielenski";
+				TargetAttributes = {
+					FAC2621C19980FD800EED86A = {
+						CreatedOnToolsVersion = 6.0;
+					};
+					FAC2622F19980FD800EED86A = {
+						CreatedOnToolsVersion = 6.0;
+						TestTargetID = FAC2621C19980FD800EED86A;
+					};
+				};
+			};
+			buildConfigurationList = FAC2621819980FD800EED86A /* Build configuration list for PBXProject "ZKInspector" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FAC2621419980FD800EED86A;
+			productRefGroup = FAC2621E19980FD800EED86A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FAC2621C19980FD800EED86A /* ZKInspector */,
+				FAC2622F19980FD800EED86A /* ZKInspectorTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FAC2621B19980FD800EED86A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAC2622819980FD800EED86A /* Images.xcassets in Resources */,
+				FAC2622B19980FD800EED86A /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FAC2622E19980FD800EED86A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FAC2621919980FD800EED86A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAC2622619980FD800EED86A /* AppDelegate.m in Sources */,
+				FAC2622319980FD800EED86A /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FAC2622C19980FD800EED86A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAC2623719980FD800EED86A /* ZKInspectorTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FAC2623219980FD800EED86A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FAC2621C19980FD800EED86A /* ZKInspector */;
+			targetProxy = FAC2623119980FD800EED86A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		FAC2622919980FD800EED86A /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FAC2622A19980FD800EED86A /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		FAC2623819980FD800EED86A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		FAC2623919980FD800EED86A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		FAC2623B19980FD800EED86A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = ZKInspector/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		FAC2623C19980FD800EED86A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = ZKInspector/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		FAC2623E19980FD800EED86A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = ZKInspectorTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ZKInspector.app/Contents/MacOS/ZKInspector";
+			};
+			name = Debug;
+		};
+		FAC2623F19980FD800EED86A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = ZKInspectorTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ZKInspector.app/Contents/MacOS/ZKInspector";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FAC2621819980FD800EED86A /* Build configuration list for PBXProject "ZKInspector" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FAC2623819980FD800EED86A /* Debug */,
+				FAC2623919980FD800EED86A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FAC2623A19980FD800EED86A /* Build configuration list for PBXNativeTarget "ZKInspector" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FAC2623B19980FD800EED86A /* Debug */,
+				FAC2623C19980FD800EED86A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		FAC2623D19980FD800EED86A /* Build configuration list for PBXNativeTarget "ZKInspectorTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FAC2623E19980FD800EED86A /* Debug */,
+				FAC2623F19980FD800EED86A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FAC2621519980FD800EED86A /* Project object */;
+}
