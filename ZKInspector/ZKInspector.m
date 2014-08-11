@@ -71,7 +71,7 @@
 
 - (void)drawRect:(NSRect)dirtyRect {
     [[NSColor lightGrayColor] set];
-    NSRectFill(NSMakeRect(0, 0, self.bounds.size.width, 1));
+    NSRectFill(NSMakeRect(0, NSMaxY(self.bounds), self.bounds.size.width, 1));
 }
 
 @end
