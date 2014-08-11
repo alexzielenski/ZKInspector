@@ -8,6 +8,8 @@ An NSScrollView subclass for 10.9+ that gets you a collapsable stack of views li
 Usage
 =====
 
+**IMPORTANT**: Drag an outline view from interface builder onto your view and change its scroll-view class to `ZKInspector`. *This must be done in IB due to a view-based outline view bug*
+
 ```objc
     [self.inspector addView:nil withTitle:@"View 1"];
     [self.inspector addView:self.view2 withTitle:@"View 2"];
