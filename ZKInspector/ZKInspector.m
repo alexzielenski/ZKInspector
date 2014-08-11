@@ -120,7 +120,7 @@
 - (void)_collapseItem:(ZKInspectorItem *)item;
 - (void)_setView:(NSView *)view forItem:(ZKInspectorItem *)item;
 - (void)_setTitle:(NSString *)title forItem:(ZKInspectorItem *)item;
-- (void)_removeItem:(ZKInspectorItem *)item'
+- (void)_removeItem:(ZKInspectorItem *)item;
 @end
 
 @implementation ZKInspector
