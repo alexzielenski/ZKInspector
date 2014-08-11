@@ -7,9 +7,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
-
+#import "ZKInspector.h"
 @interface AppDelegate : NSObject <NSApplicationDelegate>
-
-
+@property (weak) IBOutlet NSView *view1;
+@property (weak) IBOutlet NSView *view2;
+@property (weak) IBOutlet NSView *view3;
+@property (weak) IBOutlet ZKInspector *inspector;
 @end
 

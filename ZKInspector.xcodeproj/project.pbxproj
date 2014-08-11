@@ -12,6 +12,7 @@
 		FAC2622819980FD800EED86A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAC2622719980FD800EED86A /* Images.xcassets */; };
 		FAC2622B19980FD800EED86A /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAC2622919980FD800EED86A /* MainMenu.xib */; };
 		FAC2623719980FD800EED86A /* ZKInspectorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FAC2623619980FD800EED86A /* ZKInspectorTests.m */; };
+		FAC262421998100B00EED86A /* ZKInspector.m in Sources */ = {isa = PBXBuildFile; fileRef = FAC262411998100B00EED86A /* ZKInspector.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +36,8 @@
 		FAC2623019980FD800EED86A /* ZKInspectorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZKInspectorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAC2623519980FD800EED86A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FAC2623619980FD800EED86A /* ZKInspectorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZKInspectorTests.m; sourceTree = "<group>"; };
+		FAC262401998100B00EED86A /* ZKInspector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKInspector.h; sourceTree = "<group>"; };
+		FAC262411998100B00EED86A /* ZKInspector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKInspector.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +81,8 @@
 			children = (
 				FAC2622419980FD800EED86A /* AppDelegate.h */,
 				FAC2622519980FD800EED86A /* AppDelegate.m */,
+				FAC262401998100B00EED86A /* ZKInspector.h */,
+				FAC262411998100B00EED86A /* ZKInspector.m */,
 				FAC2622719980FD800EED86A /* Images.xcassets */,
 				FAC2622919980FD800EED86A /* MainMenu.xib */,
 				FAC2622019980FD800EED86A /* Supporting Files */,
@@ -211,6 +216,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FAC2622619980FD800EED86A /* AppDelegate.m in Sources */,
+				FAC262421998100B00EED86A /* ZKInspector.m in Sources */,
 				FAC2622319980FD800EED86A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
