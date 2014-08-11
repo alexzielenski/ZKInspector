@@ -30,6 +30,8 @@
 
 @class ZKInspector;
 @protocol ZKInspectorDelegate <NSObject>
+@required
+- (CGFloat)inspector:(ZKInspector *)inspector heightForView:(NSView *)view withTitle:(NSString *)title atIndex:(NSUInteger)index;
 
 @optional
 - (BOOL)inspector:(ZKInspector *)inspector shouldExpandView:(NSView *)view withTitle:(NSString *)title atIndex:(NSUInteger)index;
@@ -37,8 +39,8 @@
 
 @end
 
-@interface ZKInspector : NSScrollView
-@property (weak) id <ZKInspectorDelegate> delegate;
+@interface ZKInspector : NSOutlineView
+@property (weak) id <ZKInspectorDelegate> inspectorDelegate;
 @property (assign) CGFloat headerHeight; // defaults to 22
 - (void)addView:(NSView *)view withTitle:(NSString *)title;
 - (void)insertView:(NSView *)view withTitle:(NSString *)title atIndex:(NSUInteger)index;

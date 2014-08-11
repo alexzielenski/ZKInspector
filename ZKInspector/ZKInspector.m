@@ -40,7 +40,7 @@
     
     [[NSColor grayColor] set];
     NSRectFill(NSMakeRect(0, 0, self.bounds.size.width, 1));
-//    NSRectFill(NSMakeRect(0, NSMaxY(self.bounds) - 1, self.bounds.size.width, 1));
+    //    NSRectFill(NSMakeRect(0, NSMaxY(self.bounds) - 1, self.bounds.size.width, 1));
 }
 
 @end
@@ -50,6 +50,7 @@
 @property (strong) NSView *view;
 @property (strong) NSTableCellView *cellView;
 @property (strong) ZKTitleRowView *titleRowView;
+@property (strong) NSTableCellView *wrappingView;
 @end
 
 @implementation ZKInspectorItem
@@ -57,6 +58,8 @@
 - (id)init {
     if ((self = [super init])) {
         self.cellView = [[NSTableCellView alloc] initWithFrame:NSMakeRect(0, 0, 250, 30)];
+        self.wrappingView = [[NSTableCellView alloc] initWithFrame:self.cellView.frame];
+        
         NSTextField *textField = [[NSTextField alloc] initWithFrame:self.cellView.frame];
         textField.selectable = NO;
         textField.editable = NO;
@@ -80,7 +83,6 @@
 
 
 @interface ZKInspector () <NSOutlineViewDataSource, NSOutlineViewDelegate>
-@property (strong) NSOutlineView *outlineView;
 @property (strong) NSMutableArray *items;
 - (void)_initialize;
 - (ZKInspectorItem *)itemForView:(NSView *)view;
@@ -117,43 +119,22 @@
     self.headerHeight = kDefaultHeaderHeight;
     
     self.items = [NSMutableArray array];
-    self.hasVerticalScroller = YES;
-    self.hasHorizontalScroller = YES;
-    self.autohidesScrollers = NO;
-    
-    //! When I programmatically created the outline view sometimes its content would not show up? (datasource methods do get called)
-    //! I'll chalk that up to an devtools bug. For now, just create an outline view as you normall would
-    //! in IB and set its scrollview class to this
-    //! This is here just in case you choose to go another route and try your luck with the bug
-    if (![self.documentView isKindOfClass:[NSOutlineView class]]) {
-        self.outlineView = [[NSOutlineView alloc] initWithFrame:NSMakeRect(0, 0, 10, 10)];
-        NSTableColumn *column = [[NSTableColumn alloc] initWithIdentifier:@"ZKInspectorColumn"];
-        column.editable = NO;
-        [self.outlineView addTableColumn:column];
-        self.outlineView.outlineTableColumn = column;
-        [self.outlineView setAutoresizesOutlineColumn:YES];
-        
-        self.documentView = self.outlineView;
-    }
-    
-    self.outlineView = self.documentView;
-    
-    self.outlineView.rowSizeStyle = NSTableViewRowSizeStyleMedium;
-    self.outlineView.selectionHighlightStyle = NSTableViewSelectionHighlightStyleSourceList;
-    self.outlineView.intercellSpacing = NSZeroSize;
-    self.outlineView.floatsGroupRows = NO;
-    self.outlineView.indentationPerLevel = 0.0;
-    self.outlineView.headerView = nil;
-    self.outlineView.allowsColumnReordering = NO;
-    self.outlineView.allowsColumnResizing = NO;
+    self.rowSizeStyle = NSTableViewRowSizeStyleMedium;
+    self.selectionHighlightStyle = NSTableViewSelectionHighlightStyleSourceList;
+    self.intercellSpacing = NSZeroSize;
+    self.floatsGroupRows = NO;
+    self.indentationPerLevel = 0.0;
+    self.headerView = nil;
+    self.allowsColumnReordering = NO;
+    self.allowsColumnResizing = NO;
 }
 
 - (void)viewDidMoveToWindow {
     [super viewDidMoveToWindow];
     
-    self.outlineView.delegate = self;
-    self.outlineView.dataSource = self;
-    [self.outlineView reloadData];
+    self.delegate = self;
+    self.dataSource = self;
+    [self reloadData];
 }
 
 #pragma mark - Actions
@@ -170,7 +151,7 @@
     item.view = view;
     
     [self.items insertObject:item atIndex:index];
-    [self.outlineView insertItemsAtIndexes:[NSIndexSet indexSetWithIndex:index] inParent:nil withAnimation:NSTableViewAnimationSlideDown];
+    [self insertItemsAtIndexes:[NSIndexSet indexSetWithIndex:index] inParent:nil withAnimation:NSTableViewAnimationSlideDown];
 }
 
 - (NSString *)titleForView:(NSView *)view {
@@ -197,7 +178,7 @@
     NSAssert([self itemForView:view] == nil,  @"Every view in ZKInspector must have a unique title and view (%@)", view);
     ZKInspectorItem *item = [self itemForTitle:title];
     item.view = view;
-    [self.outlineView reloadItem:item reloadChildren:YES];
+    [self reloadItem:item reloadChildren:YES];
 }
 
 - (void)setTitle:(NSString *)title forView:(NSView *)view {
@@ -210,7 +191,7 @@
     NSAssert([self itemForView:view] == nil,  @"Every view in ZKInspector must have a unique title and view (%@)", view);
     ZKInspectorItem *item = self.items[index];
     item.view = view;
-    [self.outlineView reloadItem:item reloadChildren:YES];
+    [self reloadItem:item reloadChildren:YES];
 }
 
 - (void)setTitle:(NSString *)title forIndex:(NSUInteger)index {
@@ -221,18 +202,20 @@
 
 - (void)removeViewAtIndex:(NSUInteger)index {
     [self.items removeObjectAtIndex:index];
-    [self.outlineView removeItemsAtIndexes:[NSIndexSet indexSetWithIndex:index] inParent:nil withAnimation:NSTableViewAnimationEffectGap];
+    [self removeItemsAtIndexes:[NSIndexSet indexSetWithIndex:index] inParent:nil withAnimation:NSTableViewAnimationEffectGap];
 }
 
 - (void)moveViewAtIndex:(NSUInteger)index toIndex:(NSUInteger)destinationIndex {
     __strong ZKInspectorItem *item = self.items[index];
-    if (index < destinationIndex)
-        destinationIndex--;
     
     [self.items removeObjectAtIndex:index];
     [self.items insertObject:item atIndex:destinationIndex];
     
-    [self.outlineView moveItemAtIndex:index inParent:nil toIndex:destinationIndex+1 inParent:nil];
+    [self moveItemAtIndex:index inParent:nil toIndex:destinationIndex inParent:nil];
+}
+
+- (BOOL)validateProposedFirstResponder:(NSResponder *)responder forEvent:(NSEvent *)event {
+    return YES;
 }
 
 #pragma mark - Private
@@ -286,12 +269,17 @@
     // required
 }
 
-- (NSView *)outlineView:(NSOutlineView *)outlineView viewForTableColumn:(NSTableColumn *)tableColumn item:(id)item {
+- (NSView *)outlineView:(NSOutlineView *)outlineView viewForTableColumn:(NSTableColumn *)tableColumn item:(NSView *)item {
     if ([self outlineView:outlineView isGroupItem:item]) {
         return [item valueForKey:@"cellView"];
     }
     
-    return item;
+    NSTableCellView *cv = [self itemForView:item].wrappingView;
+    item.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable | NSViewMinXMargin | NSViewMaxXMargin | NSViewMinYMargin | NSViewMaxYMargin;
+    item.frame = NSMakeRect(0, 0, cv.bounds.size.width, cv.bounds.size.height);
+    [cv setSubviews:@[item]];
+    
+    return cv;
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item {
@@ -303,24 +291,26 @@
         return self.headerHeight;
     }
     
-    return ((NSView *)item).bounds.size.height;
+    ZKInspectorItem *i = [self itemForView:item];
+    return [self.inspectorDelegate inspector:self heightForView:i.view withTitle:i.title atIndex:[self.items indexOfObject: i]];
 }
 
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldExpandItem:(ZKInspectorItem *)item {
-    if ([self.delegate respondsToSelector:@selector(inspector:shouldExpandView:withTitle:atIndex:)]) {
-        return [self.delegate inspector:self shouldExpandView:item.view withTitle:item.title atIndex:[self.items indexOfObject:item]];
+    if ([self.inspectorDelegate respondsToSelector:@selector(inspector:shouldExpandView:withTitle:atIndex:)]) {
+        return [self.inspectorDelegate inspector:self shouldExpandView:item.view withTitle:item.title atIndex:[self.items indexOfObject:item]];
     }
     
     return YES;
 }
 
 - (void)outlineViewItemDidExpand:(NSNotification *)notification {
-    if ([self.delegate respondsToSelector:@selector(inspector:didExpandView:withTitle:atIndex:)]) {
+    if ([self.inspectorDelegate respondsToSelector:@selector(inspector:didExpandView:withTitle:atIndex:)]) {
         ZKInspectorItem *item = notification.userInfo[@"NSObject"];
-        [self.delegate inspector:self didExpandView:item.view withTitle:item.title atIndex:[self.items indexOfObject:item]];
+        [self.inspectorDelegate inspector:self didExpandView:item.view withTitle:item.title atIndex:[self.items indexOfObject:item]];
     }
-
+    
 }
 
 @end
+
