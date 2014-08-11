@@ -29,6 +29,7 @@
 #import "ZKInspector.h"
 
 #define kDefaultHeaderHeight 24.0
+const void *kRowViewContext;
 
 @class ZKInspectorItem;
 @interface ZKTitleRowView : NSTableRowView
@@ -49,6 +50,23 @@
 
 @implementation ZKTitleRowView
 
+- (void)viewDidMoveToWindow {
+    [self addObserver:self forKeyPath:@"item" options:0 context:&kRowViewContext];
+    [self addObserver:self forKeyPath:@"item.expanded" options:0 context:&kRowViewContext];
+}
+
+- (void)dealloc {
+    [self removeObserver:self forKeyPath:@"item"];
+    [self removeObserver:self forKeyPath:@"item.expanded"];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (context == &kRowViewContext) {
+        [self setNeedsDisplay:YES];
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
+}
 
 - (void)layout {
     if (!self.toggleButton || !self.cell) {
@@ -119,6 +137,10 @@
     }
     
     return self;
+}
+
+- (void)dealloc {
+    [self.cellView.textField unbind:NSValueBinding];
 }
 
 @end
