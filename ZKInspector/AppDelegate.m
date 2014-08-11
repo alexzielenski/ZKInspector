@@ -50,8 +50,4 @@
     }
 }
 
-- (CGFloat)inspector:(ZKInspector *)inspector heightForView:(NSView *)view withTitle:(NSString *)title atIndex:(NSUInteger)index {
-    return 132.0;
-}
-
 @end

@@ -81,7 +81,6 @@
 @property (strong) NSView *view;
 @property (strong) NSTableCellView *cellView;
 @property (strong) ZKTitleRowView *titleRowView;
-@property (strong) NSTableCellView *wrappingView;
 @end
 
 @implementation ZKInspectorItem
@@ -89,8 +88,7 @@
 - (id)init {
     if ((self = [super init])) {
         self.cellView = [[NSTableCellView alloc] initWithFrame:NSMakeRect(0, 0, 250, kDefaultHeaderHeight)];
-        self.wrappingView = [[NSTableCellView alloc] initWithFrame:self.cellView.frame];
-        
+
         NSTextField *textField = [[NSTextField alloc] initWithFrame:self.cellView.frame];
         textField.selectable = NO;
         textField.editable = NO;
@@ -150,6 +148,17 @@
     self.headerHeight = kDefaultHeaderHeight;
     
     self.items = [NSMutableArray array];
+
+    if (!self.outlineTableColumn) {
+        NSTableColumn *column = [[NSTableColumn alloc] initWithIdentifier:@"ZKInspectorColumn"];
+        column.editable = NO;
+        [self addTableColumn:column];
+    }
+    
+        self.outlineTableColumn = self.tableColumns[0];
+    [self setAutoresizesOutlineColumn:YES];
+    
+    
     self.rowSizeStyle = NSTableViewRowSizeStyleMedium;
     self.selectionHighlightStyle = NSTableViewSelectionHighlightStyleSourceList;
     self.intercellSpacing = NSZeroSize;
@@ -306,12 +315,7 @@
         return [item valueForKey:@"cellView"];
     }
     
-    NSTableCellView *cv = [self itemForView:item].wrappingView;
-    item.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable | NSViewMinXMargin | NSViewMaxXMargin | NSViewMinYMargin | NSViewMaxYMargin;
-    item.frame = NSMakeRect(0, 0, cv.bounds.size.width, cv.bounds.size.height);
-    [cv setSubviews:@[item]];
-    
-    return cv;
+    return item;
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item {
@@ -323,8 +327,7 @@
         return self.headerHeight;
     }
     
-    ZKInspectorItem *i = [self itemForView:item];
-    return [self.inspectorDelegate inspector:self heightForView:i.view withTitle:i.title atIndex:[self.items indexOfObject: i]];
+    return ((NSView *)item).frame.size.height;
 }
 
 

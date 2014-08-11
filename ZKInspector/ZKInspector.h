@@ -30,9 +30,6 @@
 
 @class ZKInspector;
 @protocol ZKInspectorDelegate <NSObject>
-@required
-- (CGFloat)inspector:(ZKInspector *)inspector heightForView:(NSView *)view withTitle:(NSString *)title atIndex:(NSUInteger)index;
-
 @optional
 - (BOOL)inspector:(ZKInspector *)inspector shouldExpandView:(NSView *)view withTitle:(NSString *)title atIndex:(NSUInteger)index;
 - (void)inspector:(ZKInspector *)inspector didExpandView:(NSView *)view withTitle:(NSString *)title atIndex:(NSUInteger)index;
