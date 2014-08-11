@@ -40,7 +40,7 @@
     
     [[NSColor grayColor] set];
     NSRectFill(NSMakeRect(0, 0, self.bounds.size.width, 1));
-    NSRectFill(NSMakeRect(0, NSMaxY(self.bounds) - 1, self.bounds.size.width, 1));
+//    NSRectFill(NSMakeRect(0, NSMaxY(self.bounds) - 1, self.bounds.size.width, 1));
 }
 
 @end
