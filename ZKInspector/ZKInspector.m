@@ -27,6 +27,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import "ZKInspector.h"
+@import QuartzCore.CATransaction;
 
 #define kDefaultHeaderHeight 24.0
 const void *kRowViewContext;
@@ -70,7 +71,7 @@ const void *kRowViewContext;
 
 - (void)drawRect:(NSRect)dirtyRect {
     [[NSColor lightGrayColor] set];
-
+    
     NSUInteger row = [self.outlineView rowForItem:self.item];
     if (!self.item.isExpanded) {
         NSRectFill(NSMakeRect(0, NSMaxY(self.bounds) - 1, self.bounds.size.width, 1));
@@ -88,7 +89,7 @@ const void *kRowViewContext;
 - (id)init {
     if ((self = [super init])) {
         self.cellView = [[NSTableCellView alloc] initWithFrame:NSMakeRect(0, 0, 250, kDefaultHeaderHeight)];
-
+        
         NSTextField *textField = [[NSTextField alloc] initWithFrame:self.cellView.frame];
         textField.selectable = NO;
         textField.editable = NO;
@@ -178,7 +179,7 @@ const void *kRowViewContext;
     self.headerHeight = kDefaultHeaderHeight;
     
     self.items = [NSMutableArray array];
-
+    
     if (!self.outlineTableColumn) {
         NSTableColumn *column = [[NSTableColumn alloc] initWithIdentifier:@"ZKInspectorColumn"];
         column.editable = NO;
@@ -213,11 +214,11 @@ const void *kRowViewContext;
 
 #pragma mark - Actions
 
-- (void)addView:(NSView *)view withTitle:(NSString *)title {
-    [self insertView:view withTitle:title atIndex:self.items.count];
+- (void)addView:(NSView *)view withTitle:(NSString *)title expanded:(BOOL)expanded {
+    [self insertView:view withTitle:title atIndex:self.items.count expanded:expanded];
 }
 
-- (void)insertView:(NSView *)view withTitle:(NSString *)title atIndex:(NSUInteger)index {
+- (void)insertView:(NSView *)view withTitle:(NSString *)title atIndex:(NSUInteger)index expanded:(BOOL)expanded {
     NSAssert([self _itemForTitle:title] == nil && [self _itemForView:view] == nil, @"Every view in ZKInspector must have a unique title and view (%@, %@)", title, view);
     
     ZKInspectorItem *item = [[ZKInspectorItem alloc] init];
@@ -225,7 +226,17 @@ const void *kRowViewContext;
     item.view = view;
     
     [self.items insertObject:item atIndex:index];
+    
+    [self beginUpdates];
     [self insertItemsAtIndexes:[NSIndexSet indexSetWithIndex:index] inParent:nil withAnimation:NSTableViewAnimationSlideDown];
+    if (expanded) {
+        __weak ZKInspectorItem *weakItem = item;
+        __weak ZKInspector *weakSelf = self;
+        [CATransaction setCompletionBlock:^{
+            [weakSelf _expandItem:weakItem];
+        }];
+    }
+    [self endUpdates];
 }
 
 - (NSString *)titleForView:(NSView *)view {
@@ -321,7 +332,7 @@ const void *kRowViewContext;
 }
 
 - (void)_expandItem:(ZKInspectorItem *)item {
-    [self expandItem:item];
+    [self expandItem:item expandChildren:YES];
 }
 
 - (void)_collapseItem:(ZKInspectorItem *)item {

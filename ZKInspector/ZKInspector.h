@@ -41,8 +41,8 @@
 @interface ZKInspector : NSOutlineView
 @property (weak) id <ZKInspectorDelegate> inspectorDelegate;
 @property (assign) CGFloat headerHeight; // defaults to 24
-- (void)addView:(NSView *)view withTitle:(NSString *)title;
-- (void)insertView:(NSView *)view withTitle:(NSString *)title atIndex:(NSUInteger)index;
+- (void)addView:(NSView *)view withTitle:(NSString *)title expanded:(BOOL)expanded;
+- (void)insertView:(NSView *)view withTitle:(NSString *)title atIndex:(NSUInteger)index expanded:(BOOL)expanded;
 
 - (NSString *)titleForView:(NSView *)view;
 - (NSView *)viewForTitle:(NSString *)title;
