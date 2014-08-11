@@ -28,19 +28,50 @@
 
 #import "ZKInspector.h"
 
-#define kDefaultHeaderHeight 22.0
+#define kDefaultHeaderHeight 24.0
 
 @interface ZKTitleRowView : NSTableRowView
+@property (weak) NSButton *toggleButton;
+@property (weak) NSTableCellView *cell;
 @end
 
 @implementation ZKTitleRowView
 
-- (void)drawRect:(NSRect)dirtyRect {
-    [super drawRect:dirtyRect];
+
+- (void)layout {
+    if (!self.toggleButton || !self.cell) {
+        NSButton *toggleButton = nil;
+        NSTableCellView *cell = nil;
+        for (NSView *subview in self.subviews) {
+            if ([subview isKindOfClass:[NSButton class]])
+                toggleButton = (NSButton *)subview;
+            else if ([subview isKindOfClass:[NSTableCellView class]])
+                cell = (NSTableCellView *)subview;
+        }
+        self.toggleButton = toggleButton;
+        self.cell = cell;
+        
+    }
+
+    if (self.toggleButton && self.cell) {
+        NSRect f = self.cell.frame;
+        f.origin.x = 8;
+        f.size.width = self.bounds.size.width - self.toggleButton.frame.size.width - 24;
+        f.origin.y = NSMidY(self.bounds) - f.size.height / 2;
+        
+        self.cell.frame = f;
+        
+        f = self.toggleButton.frame;
+        f.origin.y = NSMidY(self.bounds) - f.size.height / 2;
+        self.toggleButton.frame = f;
+    }
     
-    [[NSColor grayColor] set];
+    [super layout];
+}
+
+- (void)drawRect:(NSRect)dirtyRect {
+    [[NSColor lightGrayColor] set];
     NSRectFill(NSMakeRect(0, 0, self.bounds.size.width, 1));
-    //    NSRectFill(NSMakeRect(0, NSMaxY(self.bounds) - 1, self.bounds.size.width, 1));
 }
 
 @end
@@ -57,7 +88,7 @@
 
 - (id)init {
     if ((self = [super init])) {
-        self.cellView = [[NSTableCellView alloc] initWithFrame:NSMakeRect(0, 0, 250, 30)];
+        self.cellView = [[NSTableCellView alloc] initWithFrame:NSMakeRect(0, 0, 250, kDefaultHeaderHeight)];
         self.wrappingView = [[NSTableCellView alloc] initWithFrame:self.cellView.frame];
         
         NSTextField *textField = [[NSTextField alloc] initWithFrame:self.cellView.frame];
@@ -66,9 +97,9 @@
         textField.bezeled = NO;
         textField.drawsBackground = NO;
         
-        textField.translatesAutoresizingMaskIntoConstraints = NO;
-        self.cellView.translatesAutoresizingMaskIntoConstraints = NO;
-        
+//        textField.translatesAutoresizingMaskIntoConstraints = NO;
+//        self.cellView.translatesAutoresizingMaskIntoConstraints = NO;
+        self.cellView.rowSizeStyle = NSTableViewRowSizeStyleLarge;
         [self.cellView addSubview:textField];
         self.cellView.textField = textField;
         
@@ -126,6 +157,7 @@
     self.indentationPerLevel = 0.0;
     self.headerView = nil;
     self.allowsColumnReordering = NO;
+    self.gridStyleMask = NSTableViewGridNone;
     self.allowsColumnResizing = NO;
 }
 
@@ -327,7 +359,6 @@
     }
     
 }
-
 
 @end
 
