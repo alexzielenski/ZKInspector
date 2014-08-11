@@ -36,6 +36,8 @@
 @optional
 - (BOOL)inspector:(ZKInspector *)inspector shouldExpandView:(NSView *)view withTitle:(NSString *)title atIndex:(NSUInteger)index;
 - (void)inspector:(ZKInspector *)inspector didExpandView:(NSView *)view withTitle:(NSString *)title atIndex:(NSUInteger)index;
+- (BOOL)inspector:(ZKInspector *)inspector shouldCollapseView:(NSView *)view withTitle:(NSString *)title atIndex:(NSUInteger)index;
+- (void)inspector:(ZKInspector *)inspector didCollapseView:(NSView *)view withTitle:(NSString *)title atIndex:(NSUInteger)index;
 
 @end
 

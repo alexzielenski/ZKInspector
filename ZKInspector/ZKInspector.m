@@ -312,5 +312,22 @@
     
 }
 
+- (BOOL)outlineView:(NSOutlineView *)outlineView shouldCollapseItem:(ZKInspectorItem *)item {
+    if ([self.inspectorDelegate respondsToSelector:@selector(inspector:shouldCollapseView:withTitle:atIndex:)]) {
+        return [self.inspectorDelegate inspector:self shouldCollapseView:item.view withTitle:item.title atIndex:[self.items indexOfObject:item]];
+    }
+    
+    return YES;
+}
+
+- (void)outlineViewItemDidCollapse:(NSNotification *)notification {
+    if ([self.inspectorDelegate respondsToSelector:@selector(inspector:didCollapseView:withTitle:atIndex:)]) {
+        ZKInspectorItem *item = notification.userInfo[@"NSObject"];
+        [self.inspectorDelegate inspector:self didCollapseView:item.view withTitle:item.title atIndex:[self.items indexOfObject:item]];
+    }
+    
+}
+
+
 @end
 
