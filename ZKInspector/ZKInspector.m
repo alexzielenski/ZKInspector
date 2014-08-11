@@ -185,7 +185,10 @@ const void *kRowViewContext;
         [self addTableColumn:column];
     }
     
-        self.outlineTableColumn = self.tableColumns[0];
+    self.outlineTableColumn = self.tableColumns[0];
+    self.outlineTableColumn.minWidth = 100;
+    self.outlineTableColumn.maxWidth = FLT_MAX;
+    self.outlineTableColumn.resizingMask = NSTableColumnAutoresizingMask;
     [self setAutoresizesOutlineColumn:YES];
     
     
@@ -307,10 +310,6 @@ const void *kRowViewContext;
     [self _collapseItem:[self _itemForView:view]];
 }
 
-- (BOOL)validateProposedFirstResponder:(NSResponder *)responder forEvent:(NSEvent *)event {
-    return YES;
-}
-
 #pragma mark - Private
 
 - (ZKInspectorItem *)_itemForView:(NSView *)view {
@@ -344,6 +343,17 @@ const void *kRowViewContext;
     [self removeViewAtIndex:[self.items indexOfObject:item]];
 }
 
+#pragma mark - Override
+
+- (BOOL)validateProposedFirstResponder:(NSResponder *)responder forEvent:(NSEvent *)event {
+    return YES;
+}
+
+- (NSRect)frameOfCellAtColumn:(NSInteger)column row:(NSInteger)row {
+    NSRect frame = [super frameOfCellAtColumn:column row:row];
+    frame.size.width = self.bounds.size.width;
+    return frame;
+}
 
 #pragma mark - NSOutlineViewDataSource
 
