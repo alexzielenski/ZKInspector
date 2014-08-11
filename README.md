@@ -45,6 +45,11 @@ Create an `NSOutlineView` as you normally would in interface builder then simply
     }
 }
 
+- (CGFloat)inspector:(ZKInspector *)inspector heightForView:(NSView *)view withTitle:(NSString *)title atIndex:(NSUInteger)index {
+    return 132.0;
+}
+
+
 ```
 
 License
