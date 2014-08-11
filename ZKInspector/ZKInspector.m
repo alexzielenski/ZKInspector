@@ -68,37 +68,6 @@ const void *kRowViewContext;
     }
 }
 
-- (void)layout {
-    if (!self.toggleButton || !self.cell) {
-        NSButton *toggleButton = nil;
-        NSTableCellView *cell = nil;
-        for (NSView *subview in self.subviews) {
-            if ([subview isKindOfClass:[NSButton class]])
-                toggleButton = (NSButton *)subview;
-            else if ([subview isKindOfClass:[NSTableCellView class]])
-                cell = (NSTableCellView *)subview;
-        }
-        self.toggleButton = toggleButton;
-        self.cell = cell;
-        
-    }
-
-    if (self.toggleButton && self.cell) {
-        NSRect f = self.cell.frame;
-        f.origin.x = 8;
-        f.size.width = self.bounds.size.width - self.toggleButton.frame.size.width - 24;
-        f.origin.y = NSMidY(self.bounds) - f.size.height / 2;
-        
-        self.cell.frame = f;
-        
-        f = self.toggleButton.frame;
-        f.origin.y = NSMidY(self.bounds) - f.size.height / 2;
-        self.toggleButton.frame = f;
-    }
-    
-    [super layout];
-}
-
 - (void)drawRect:(NSRect)dirtyRect {
     [[NSColor lightGrayColor] set];
 
@@ -126,12 +95,33 @@ const void *kRowViewContext;
         textField.bezeled = NO;
         textField.drawsBackground = NO;
         
-//        textField.translatesAutoresizingMaskIntoConstraints = NO;
-//        self.cellView.translatesAutoresizingMaskIntoConstraints = NO;
+        textField.translatesAutoresizingMaskIntoConstraints = NO;
+        self.cellView.translatesAutoresizingMaskIntoConstraints = NO;
         self.cellView.rowSizeStyle = NSTableViewRowSizeStyleLarge;
-        [self.cellView addSubview:textField];
+        
+        NSView *wrap = [[NSView alloc] initWithFrame:self.cellView.bounds];
+        wrap.translatesAutoresizingMaskIntoConstraints = NO;
+        [wrap addSubview:textField];
+        [self.cellView addSubview:wrap];
         self.cellView.textField = textField;
         
+        NSDictionary *views = NSDictionaryOfVariableBindings(wrap, textField);
+        [self.cellView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(8)-[wrap]|"
+                                                                              options:0
+                                                                              metrics:nil
+                                                                                views:views]];
+        [self.cellView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[wrap]|"
+                                                                              options:0
+                                                                              metrics:nil
+                                                                                views:views]];
+        [wrap addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[textField]|"
+                                                                     options:0
+                                                                     metrics:nil
+                                                                       views:views]];
+        [wrap addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[textField]|"
+                                                                     options:0
+                                                                     metrics:nil
+                                                                       views:views]];
         [textField bind:NSValueBinding toObject:self withKeyPath:@"title" options:nil];
         self.titleRowView = [[ZKTitleRowView alloc] initWithFrame:NSZeroRect];
     }
