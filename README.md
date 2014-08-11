@@ -8,32 +8,46 @@ An NSScrollView subclass for 10.9+ that gets you a collapsable stack of views li
 Usage
 =====
 
-**IMPORTANT**: Drag an outline view from interface builder onto your view and change its scroll-view class to `ZKInspector`. *This must be done in IB due to a view-based outline view bug*
+Create an `NSOutlineView` as you normally would in interface builder then simply change its class to `ZKInspector`
 
 ```objc
-    [self.inspector addView:nil withTitle:@"View 1"];
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+    self.inspector.inspectorDelegate = self;
+    // Insert code here to initialize your application
+    [self.inspector addView:[[NSView alloc] initWithFrame:NSMakeRect(0, 0, 0, 1)] withTitle:@"View 1"];
     [self.inspector addView:self.view2 withTitle:@"View 2"];
 
     
-    [self.inspector setTitle:@"New Title" forIndex:0];
-    [self.inspector moveViewAtIndex:0 toIndex:1];
-    
-    - (BOOL)inspector:(ZKInspector *)inspector shouldExpandView:(NSView *)view withTitle:(NSString *)title atIndex:(NSUInteger)index {
-        return index != 0;
-    }
+    [self.inspector setTitle:@"New Title" forIndex:0];    
+}
 
-    - (void)inspector:(ZKInspector *)inspector didExpandView:(NSView *)view withTitle:(NSString *)title atIndex:(NSUInteger)index {
-        if (index == 1 && inspector.numberOfViews == 2) {
+- (void)applicationWillTerminate:(NSNotification *)aNotification {
+    // Insert code here to tear down your application
+}
+
+- (BOOL)inspector:(ZKInspector *)inspector shouldExpandView:(NSView *)view withTitle:(NSString *)title atIndex:(NSUInteger)index {
+    return index != 0;
+}
+
+- (void)inspector:(ZKInspector *)inspector didExpandView:(NSView *)view withTitle:(NSString *)title atIndex:(NSUInteger)index {
+    if (index == 1 && inspector.numberOfViews == 2) {
+        static BOOL dispatched = NO;
+        if (!dispatched) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [self.inspector addView:self.view3 withTitle:@"View 3"];
                 [self.inspector setView:self.view1 forIndex:1];
-            }); 
-        } else if (index == 2) {
-            if (![[self.inspector titleAtIndex:1] isEqualToString:@"SAP"])
-                [self.inspector setTitle:@"SAP" forIndex:1];
-            [self.inspector moveViewAtIndex:0 toIndex:1];
+            });
+            dispatched = YES;
         }
+    } else if (index == 2) {
+        [self.inspector setTitle:[[NSUUID UUID] UUIDString] forIndex:1];
+        [self.inspector moveViewAtIndex:0 toIndex:1];
     }
+}
+
+- (CGFloat)inspector:(ZKInspector *)inspector heightForView:(NSView *)view withTitle:(NSString *)title atIndex:(NSUInteger)index {
+    return 132.0;
+}
 ```
 
 License
