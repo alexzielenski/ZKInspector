@@ -1,7 +1,7 @@
 ZKInspector
 ===========
 
-An NSScrollView subclass for 10.9+ that gets you a collapsable stack of views like Xcode's inspector.
+An NSOutlineView subclass for 10.9+ that gets you a collapsable stack of views like Xcode's inspector.
 
 ![Preview](https://github.com/alexzielenski/ZKInspector/raw/master/preview.png "Preview")
 
