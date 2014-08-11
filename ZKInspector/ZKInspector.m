@@ -30,9 +30,21 @@
 
 #define kDefaultHeaderHeight 24.0
 
+@class ZKInspectorItem;
 @interface ZKTitleRowView : NSTableRowView
 @property (weak) NSButton *toggleButton;
 @property (weak) NSTableCellView *cell;
+@property (weak) ZKInspectorItem *item;
+@property (weak) NSOutlineView *outlineView;
+@end
+
+
+@interface ZKInspectorItem : NSObject
+@property (copy) NSString *title;
+@property (strong) NSView *view;
+@property (strong) NSTableCellView *cellView;
+@property (strong) ZKTitleRowView *titleRowView;
+@property (assign, getter=isExpanded) BOOL expanded;
 @end
 
 @implementation ZKTitleRowView
@@ -71,16 +83,17 @@
 
 - (void)drawRect:(NSRect)dirtyRect {
     [[NSColor lightGrayColor] set];
-    NSRectFill(NSMakeRect(0, NSMaxY(self.bounds), self.bounds.size.width, 1));
+
+    NSUInteger row = [self.outlineView rowForItem:self.item];
+    if (!self.item.isExpanded) {
+        NSRectFill(NSMakeRect(0, NSMaxY(self.bounds) - 1, self.bounds.size.width, 1));
+    }
+    
+    if (row != 0) {
+        NSRectFill(NSMakeRect(0, 0, self.bounds.size.width, 1));
+    }
 }
 
-@end
-
-@interface ZKInspectorItem : NSObject
-@property (copy) NSString *title;
-@property (strong) NSView *view;
-@property (strong) NSTableCellView *cellView;
-@property (strong) ZKTitleRowView *titleRowView;
 @end
 
 @implementation ZKInspectorItem
@@ -348,7 +361,10 @@
 
 - (NSTableRowView *)outlineView:(NSOutlineView *)outlineView rowViewForItem:(id)item {
     if ([self outlineView:outlineView isGroupItem:item]) {
-        return ((ZKInspectorItem *)item).titleRowView;
+        ZKTitleRowView *rowView = ((ZKInspectorItem *)item).titleRowView;
+        rowView.outlineView = outlineView;
+        rowView.item = item;
+        return rowView;
     }
     return nil;
 }
@@ -391,8 +407,10 @@
 }
 
 - (void)outlineViewItemDidExpand:(NSNotification *)notification {
+    ZKInspectorItem *item = notification.userInfo[@"NSObject"];
+    item.expanded = YES;
+    
     if ([self.inspectorDelegate respondsToSelector:@selector(inspector:didExpandView:withTitle:atIndex:)]) {
-        ZKInspectorItem *item = notification.userInfo[@"NSObject"];
         [self.inspectorDelegate inspector:self didExpandView:item.view withTitle:item.title atIndex:[self.items indexOfObject:item]];
     }
     
@@ -407,8 +425,10 @@
 }
 
 - (void)outlineViewItemDidCollapse:(NSNotification *)notification {
+    ZKInspectorItem *item = notification.userInfo[@"NSObject"];
+    item.expanded = NO;
+    
     if ([self.inspectorDelegate respondsToSelector:@selector(inspector:didCollapseView:withTitle:atIndex:)]) {
-        ZKInspectorItem *item = notification.userInfo[@"NSObject"];
         [self.inspectorDelegate inspector:self didCollapseView:item.view withTitle:item.title atIndex:[self.items indexOfObject:item]];
     }
     
