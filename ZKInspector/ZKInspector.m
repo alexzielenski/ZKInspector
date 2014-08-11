@@ -114,8 +114,13 @@
 @interface ZKInspector () <NSOutlineViewDataSource, NSOutlineViewDelegate>
 @property (strong) NSMutableArray *items;
 - (void)_initialize;
-- (ZKInspectorItem *)itemForView:(NSView *)view;
-- (ZKInspectorItem *)itemForTitle:(NSString *)title;
+- (ZKInspectorItem *)_itemForView:(NSView *)view;
+- (ZKInspectorItem *)_itemForTitle:(NSString *)title;
+- (void)_expandItem:(ZKInspectorItem *)item;
+- (void)_collapseItem:(ZKInspectorItem *)item;
+- (void)_setView:(NSView *)view forItem:(ZKInspectorItem *)item;
+- (void)_setTitle:(NSString *)title forItem:(ZKInspectorItem *)item;
+- (void)_removeItem:(ZKInspectorItem *)item'
 @end
 
 @implementation ZKInspector
@@ -185,7 +190,7 @@
 }
 
 - (void)insertView:(NSView *)view withTitle:(NSString *)title atIndex:(NSUInteger)index {
-    NSAssert([self itemForTitle:title] == nil && [self itemForView:view] == nil, @"Every view in ZKInspector must have a unique title and view (%@, %@)", title, view);
+    NSAssert([self _itemForTitle:title] == nil && [self _itemForView:view] == nil, @"Every view in ZKInspector must have a unique title and view (%@, %@)", title, view);
     
     ZKInspectorItem *item = [[ZKInspectorItem alloc] init];
     item.title = title;
@@ -196,11 +201,11 @@
 }
 
 - (NSString *)titleForView:(NSView *)view {
-    return [self itemForView:view].title;
+    return [self _itemForView:view].title;
 }
 
 - (NSView *)viewForTitle:(NSString *)title {
-    return [self itemForTitle:title].view;
+    return [self _itemForTitle:title].view;
 }
 
 - (NSString *)titleAtIndex:(NSUInteger)index {
@@ -216,29 +221,27 @@
 }
 
 - (void)setView:(NSView *)view forTitle:(NSString *)title {
-    NSAssert([self itemForView:view] == nil,  @"Every view in ZKInspector must have a unique title and view (%@)", view);
-    ZKInspectorItem *item = [self itemForTitle:title];
-    item.view = view;
-    [self reloadItem:item reloadChildren:YES];
+    [self _setView:view forItem:[self _itemForTitle:title]];
 }
 
 - (void)setTitle:(NSString *)title forView:(NSView *)view {
-    NSAssert([self itemForTitle:title] == nil,  @"Every view in ZKInspector must have a unique title and view (%@)", title);
-    ZKInspectorItem *item = [self itemForView:view];
-    item.title = title;
+    [self _setTitle:title forItem:[self _itemForView:view]];
 }
 
 - (void)setView:(NSView *)view forIndex:(NSUInteger)index {
-    NSAssert([self itemForView:view] == nil,  @"Every view in ZKInspector must have a unique title and view (%@)", view);
-    ZKInspectorItem *item = self.items[index];
-    item.view = view;
-    [self reloadItem:item reloadChildren:YES];
+    [self _setView:view forItem:self.items[index]];
 }
 
 - (void)setTitle:(NSString *)title forIndex:(NSUInteger)index {
-    NSAssert([self itemForTitle:title] == nil,  @"Every view in ZKInspector must have a unique title and view (%@)", title);
-    ZKInspectorItem *item = self.items[index];
-    item.title = title;
+    [self _setTitle:title forItem:self.items[index]];
+}
+
+- (void)removeView:(NSView *)view {
+    [self _removeItem:[self _itemForView:view]];
+}
+
+- (void)removeViewWithTitle:(NSString *)title {
+    [self _removeItem:[self _itemForTitle:title]];
 }
 
 - (void)removeViewAtIndex:(NSUInteger)index {
@@ -255,19 +258,67 @@
     [self moveItemAtIndex:index inParent:nil toIndex:destinationIndex inParent:nil];
 }
 
+- (void)expandViewForTitle:(NSString *)title {
+    [self _expandItem:[self _itemForTitle:title]];
+}
+
+- (void)expandViewAtIndex:(NSUInteger)index {
+    [self _expandItem:self.items[index]];
+}
+
+- (void)expandView:(NSView *)view {
+    [self _expandItem:[self _itemForView:view]];
+}
+
+- (void)collapseViewForTitle:(NSString *)title {
+    [self _collapseItem:[self _itemForTitle:title]];
+}
+
+- (void)collapseViewAtIndex:(NSUInteger)index {
+    [self _collapseItem:self.items[index]];
+}
+
+- (void)collapseView:(NSView *)view {
+    [self _collapseItem:[self _itemForView:view]];
+}
+
 - (BOOL)validateProposedFirstResponder:(NSResponder *)responder forEvent:(NSEvent *)event {
     return YES;
 }
 
 #pragma mark - Private
 
-- (ZKInspectorItem *)itemForView:(NSView *)view {
+- (ZKInspectorItem *)_itemForView:(NSView *)view {
     return [[self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"view == %@", view]] firstObject];
 }
 
-- (ZKInspectorItem *)itemForTitle:(NSString *)title {
+- (ZKInspectorItem *)_itemForTitle:(NSString *)title {
     return [[self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"title == %@", title]] firstObject];
 }
+
+- (void)_expandItem:(ZKInspectorItem *)item {
+    [self expandItem:item];
+}
+
+- (void)_collapseItem:(ZKInspectorItem *)item {
+    [self collapseItem:item];
+}
+
+- (void)_setView:(NSView *)view forItem:(ZKInspectorItem *)item {
+    NSAssert([self _itemForView:view] == nil,  @"Every view in ZKInspector must have a unique title and view (%@)", view);
+    item.view = view;
+    [self reloadItem:item reloadChildren:YES];
+}
+
+- (void)_setTitle:(NSString *)title forItem:(ZKInspectorItem *)item {
+    NSAssert([self _itemForTitle:title] == nil,  @"Every view in ZKInspector must have a unique title and view (%@)", title);
+    item.title = title;
+}
+
+- (void)_removeItem:(ZKInspectorItem *)item {
+    [self removeViewAtIndex:[self.items indexOfObject:item]];
+}
+
 
 #pragma mark - NSOutlineViewDataSource
 
