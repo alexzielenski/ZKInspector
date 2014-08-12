@@ -202,6 +202,7 @@ const void *kRowViewContext;
     self.allowsColumnReordering = NO;
     self.gridStyleMask = NSTableViewGridNone;
     self.allowsColumnResizing = NO;
+    self.focusRingType = NSFocusRingTypeNone;
 }
 
 - (void)viewDidMoveToWindow {
@@ -210,6 +211,10 @@ const void *kRowViewContext;
     self.delegate = self;
     self.dataSource = self;
     [self reloadData];
+}
+
+- (BOOL)acceptsFirstResponder {
+    return NO;
 }
 
 #pragma mark - Actions
