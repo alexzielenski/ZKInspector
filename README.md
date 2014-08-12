@@ -14,8 +14,8 @@ Create an `NSOutlineView` as you normally would in interface builder then simply
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     self.inspector.inspectorDelegate = self;
     // Insert code here to initialize your application
-    [self.inspector addView:[[NSView alloc] initWithFrame:NSMakeRect(0, 0, 0, 1)] withTitle:@"View 1"];
-    [self.inspector addView:self.view2 withTitle:@"View 2"];
+    [self.inspector addView:[[NSView alloc] initWithFrame:NSMakeRect(0, 0, 0, 1)] withTitle:@"View 1" expanded:NO];
+    [self.inspector addView:self.view2 withTitle:@"View 2" expanded:NO];
 
     
     [self.inspector setTitle:@"New Title" forIndex:0];    
@@ -34,7 +34,7 @@ Create an `NSOutlineView` as you normally would in interface builder then simply
         static BOOL dispatched = NO;
         if (!dispatched) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self.inspector addView:self.view3 withTitle:@"View 3"];
+                [self.inspector addView:self.view3 withTitle:@"View 3" expanded:YES];
                 [self.inspector setView:self.view1 forIndex:1];
             });
             dispatched = YES;
