@@ -29,17 +29,6 @@
 #import "ZKInspector.h"
 @import QuartzCore.CATransaction;
 
-@interface ZKFlippedView : NSTableCellView
-@end
-
-@implementation ZKFlippedView
-
-- (BOOL)isFlipped {
-    return YES;
-}
-
-@end
-
 #define kDefaultHeaderHeight 24.0
 const void *kRowViewContext;
 
@@ -55,7 +44,6 @@ const void *kRowViewContext;
 @interface ZKInspectorItem : NSObject
 @property (copy) NSString *title;
 @property (strong) NSView *view;
-@property (strong) NSTableCellView *wrapperView;
 @property (strong) NSTableCellView *cellView;
 @property (strong) ZKTitleRowView *titleRowView;
 @property (assign, getter=isExpanded) BOOL expanded;
@@ -137,33 +125,12 @@ const void *kRowViewContext;
                                                                        views:views]];
         [textField bind:NSValueBinding toObject:self withKeyPath:@"title" options:nil];
         self.titleRowView = [[ZKTitleRowView alloc] initWithFrame:NSZeroRect];
-        
-        self.wrapperView = [[ZKFlippedView alloc] initWithFrame:NSZeroRect];
-        self.wrapperView.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addObserver:self forKeyPath:@"view" options:0 context:nil];
-        [self addObserver:self forKeyPath:@"wrapperView.frame" options:0 context:nil];
     }
     
     return self;
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"view"]) {
-        self.wrapperView.frame = NSMakeRect(self.wrapperView.frame.origin.x, self.wrapperView.frame.origin.y, self.view.bounds.size.width, self.view.bounds.size.height);
-        [self.wrapperView setSubviews:@[ self.view ]];
-        
-    } else if ([keyPath isEqualToString:@"wrapperView.frame"]) {
-        NSRect f = self.view.frame;
-        f.origin.x = 0;
-        f.origin.y = 0;
-        f.size.width = self.wrapperView.frame.size.width;
-        self.view.frame = f;
-    }
-}
-
 - (void)dealloc {
-    [self removeObserver:self forKeyPath:@"wrapperView.frame"];
-    [self removeObserver:self forKeyPath:@"view"];
     [self.cellView.textField unbind:NSValueBinding];
 }
 
@@ -390,7 +357,10 @@ static void *ZKDirtyViewContext;
         NSRect newRect = newFrame.rectValue;
         
         if (oldRect.size.height != newRect.size.height) {
-            [self noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndex:[self rowForView:((ZKInspectorItem *)object).wrapperView]]];
+            // It would've been nice to get the animation that this provides, but the outline view seems to get the delta
+            // for the previous and current heights and keeps setting the frame of the view which causes an infinite loop
+//            [self noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndex:[self rowForView:((ZKInspectorItem *)object).view]]];
+            [self reloadItem:object reloadChildren:YES];
         }
         
     } else {
@@ -447,7 +417,7 @@ static void *ZKDirtyViewContext;
     if (item == nil)
         return self.items[index];
     
-    return ((ZKInspectorItem *)item).wrapperView;
+    return ((ZKInspectorItem *)item).view;
 }
 
 - (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item {
@@ -502,9 +472,7 @@ static void *ZKDirtyViewContext;
         return self.headerHeight;
     }
     
-    ZKInspectorItem *parent = [self parentForItem:item];
-    
-    return parent.view.frame.size.height;
+    return ((NSView *)item).frame.size.height;
 }
 
 
