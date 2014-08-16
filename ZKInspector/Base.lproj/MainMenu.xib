@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6205" systemVersion="14A314h" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="101000" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6205"/>
     </dependencies>
     <objects>
@@ -687,13 +686,13 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" headerView="7ab-Aq-pcI" indentationPerLevel="16" autoresizesOutlineColumn="YES" outlineTableColumn="SpC-El-gv8" id="oHO-fQ-iLh" customClass="ZKInspector">
-                                    <rect key="frame" x="0.0" y="0.0" width="480" height="19"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="408" height="19"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <size key="intercellSpacing" width="3" height="2"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                     <tableColumns>
-                                        <tableColumn identifier="AutomaticTableColumnIdentifier.0" width="405" minWidth="40" maxWidth="1000" id="SpC-El-gv8">
+                                        <tableColumn identifier="AutomaticTableColumnIdentifier.0" width="477" minWidth="40" maxWidth="1000" id="SpC-El-gv8">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -738,7 +737,7 @@
             <rect key="frame" x="0.0" y="0.0" width="163" height="96"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5BM-BZ-SaK">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5BM-BZ-SaK">
                     <rect key="frame" x="62" y="40" width="12" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="1" id="Boc-53-7t5">
                         <font key="font" metaFont="system"/>
@@ -747,6 +746,11 @@
                     </textFieldCell>
                 </textField>
             </subviews>
+            <constraints>
+                <constraint firstItem="5BM-BZ-SaK" firstAttribute="top" secondItem="P8e-96-fT3" secondAttribute="top" constant="39" id="nQx-bw-oZX"/>
+                <constraint firstAttribute="trailing" secondItem="5BM-BZ-SaK" secondAttribute="trailing" constant="91" id="oi7-LH-0e0"/>
+                <constraint firstItem="5BM-BZ-SaK" firstAttribute="leading" secondItem="P8e-96-fT3" secondAttribute="leading" constant="64" id="zkH-o1-P7d"/>
+            </constraints>
             <point key="canvasLocation" x="379.5" y="875"/>
         </customView>
         <customView id="qNB-Rn-XDz">
@@ -765,11 +769,11 @@
             <point key="canvasLocation" x="359.5" y="1042"/>
         </customView>
         <customView id="vHO-Bp-Oa6">
-            <rect key="frame" x="0.0" y="0.0" width="163" height="96"/>
+            <rect key="frame" x="0.0" y="0.0" width="163" height="160"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xip-A7-Q46">
-                    <rect key="frame" x="62" y="40" width="12" height="17"/>
+                    <rect key="frame" x="62" y="104" width="12" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="3" id="moW-u8-yTG">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -777,7 +781,7 @@
                     </textFieldCell>
                 </textField>
             </subviews>
-            <point key="canvasLocation" x="372.5" y="1175"/>
+            <point key="canvasLocation" x="380.5" y="1175"/>
         </customView>
     </objects>
 </document>

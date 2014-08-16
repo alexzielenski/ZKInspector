@@ -44,6 +44,7 @@ const void *kRowViewContext;
 @interface ZKInspectorItem : NSObject
 @property (copy) NSString *title;
 @property (strong) NSView *view;
+@property (strong) NSTableCellView *wrapperView;
 @property (strong) NSTableCellView *cellView;
 @property (strong) ZKTitleRowView *titleRowView;
 @property (assign, getter=isExpanded) BOOL expanded;
@@ -125,12 +126,33 @@ const void *kRowViewContext;
                                                                        views:views]];
         [textField bind:NSValueBinding toObject:self withKeyPath:@"title" options:nil];
         self.titleRowView = [[ZKTitleRowView alloc] initWithFrame:NSZeroRect];
+        
+        self.wrapperView = [[NSTableCellView alloc] initWithFrame:NSZeroRect];
+        self.wrapperView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self addObserver:self forKeyPath:@"view" options:0 context:nil];
+        [self addObserver:self forKeyPath:@"wrapperView.frame" options:0 context:nil];
     }
     
     return self;
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"view"]) {
+        self.wrapperView.frame = NSMakeRect(self.wrapperView.frame.origin.x, self.wrapperView.frame.origin.y, self.view.bounds.size.width, self.view.bounds.size.height);
+        [self.wrapperView setSubviews:@[ self.view ]];
+        
+    } else if ([keyPath isEqualToString:@"wrapperView.frame"]) {
+        NSRect f = self.view.frame;
+        f.origin.x = 0;
+        f.origin.y = 0;
+        f.size.width = self.wrapperView.frame.size.width;
+        self.view.frame = f;
+    }
+}
+
 - (void)dealloc {
+    [self removeObserver:self forKeyPath:@"wrapperView.frame"];
+    [self removeObserver:self forKeyPath:@"view"];
     [self.cellView.textField unbind:NSValueBinding];
 }
 
@@ -147,6 +169,8 @@ const void *kRowViewContext;
 - (void)_setView:(NSView *)view forItem:(ZKInspectorItem *)item;
 - (void)_setTitle:(NSString *)title forItem:(ZKInspectorItem *)item;
 - (void)_removeItem:(ZKInspectorItem *)item;
+- (void)_startObservingItem:(ZKInspectorItem *)item;
+- (void)_stopObservingItem:(ZKInspectorItem *)item;
 @end
 
 @implementation ZKInspector
@@ -229,7 +253,7 @@ const void *kRowViewContext;
     ZKInspectorItem *item = [[ZKInspectorItem alloc] init];
     item.title = title;
     item.view = view;
-    
+    [self _startObservingItem:item];
     [self.items insertObject:item atIndex:index];
     
     [self beginUpdates];
@@ -289,6 +313,7 @@ const void *kRowViewContext;
 }
 
 - (void)removeViewAtIndex:(NSUInteger)index {
+    [self _stopObservingItem:self.items[index]];
     [self.items removeObjectAtIndex:index];
     [self removeItemsAtIndexes:[NSIndexSet indexSetWithIndex:index] inParent:nil withAnimation:NSTableViewAnimationEffectGap];
 }
@@ -327,6 +352,40 @@ const void *kRowViewContext;
 }
 
 #pragma mark - Private
+
+static void *ZKDirtyViewContext;
+
+- (void)_startObservingItem:(ZKInspectorItem *)item {
+    [item addObserver:self forKeyPath:@"view.frame"
+              options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
+              context:&ZKDirtyViewContext];
+}
+
+- (void)_stopObservingItem:(ZKInspectorItem *)item {
+    [item removeObserver:self forKeyPath:@"view.frame" context:&ZKDirtyViewContext];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (context == &ZKDirtyViewContext) {
+        NSValue *oldFrame = change[NSKeyValueChangeOldKey];
+        NSValue *newFrame = change[NSKeyValueChangeNewKey];
+        
+        if ([oldFrame isKindOfClass:[NSNull class]])
+            oldFrame = nil;
+        if ([newFrame isKindOfClass:[NSNull class]])
+            newFrame = nil;
+        
+        NSRect oldRect = oldFrame.rectValue;
+        NSRect newRect = newFrame.rectValue;
+        
+        if (oldRect.size.height != newRect.size.height) {
+            [self noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndex:[self rowForView:((ZKInspectorItem *)object).wrapperView]]];
+        }
+        
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
+}
 
 - (ZKInspectorItem *)_itemForView:(NSView *)view {
     return [[self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"view == %@", view]] firstObject];
@@ -377,7 +436,7 @@ const void *kRowViewContext;
     if (item == nil)
         return self.items[index];
     
-    return ((ZKInspectorItem *)item).view;
+    return ((ZKInspectorItem *)item).wrapperView;
 }
 
 - (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item {
@@ -432,7 +491,9 @@ const void *kRowViewContext;
         return self.headerHeight;
     }
     
-    return ((NSView *)item).frame.size.height;
+    ZKInspectorItem *parent = [self parentForItem:item];
+    
+    return parent.view.frame.size.height;
 }
 
 

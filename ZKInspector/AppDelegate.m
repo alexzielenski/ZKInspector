@@ -23,7 +23,17 @@
     [self.inspector addView:self.view2 withTitle:@"View 2" expanded:NO];
 
     
-    [self.inspector setTitle:@"New Title" forIndex:0];    
+    [self.inspector setTitle:@"New Title" forIndex:0];
+    [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(timerAction:) userInfo:nil repeats:YES];
+}
+
+- (void)timerAction:(id)sender {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSRect f = self.view1.frame;
+        f.size.height += 10;
+        self.view1.frame = f;
+    });
+
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
