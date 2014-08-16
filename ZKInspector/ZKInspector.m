@@ -29,6 +29,17 @@
 #import "ZKInspector.h"
 @import QuartzCore.CATransaction;
 
+@interface ZKFlippedView : NSTableCellView
+@end
+
+@implementation ZKFlippedView
+
+- (BOOL)isFlipped {
+    return YES;
+}
+
+@end
+
 #define kDefaultHeaderHeight 24.0
 const void *kRowViewContext;
 
@@ -127,7 +138,7 @@ const void *kRowViewContext;
         [textField bind:NSValueBinding toObject:self withKeyPath:@"title" options:nil];
         self.titleRowView = [[ZKTitleRowView alloc] initWithFrame:NSZeroRect];
         
-        self.wrapperView = [[NSTableCellView alloc] initWithFrame:NSZeroRect];
+        self.wrapperView = [[ZKFlippedView alloc] initWithFrame:NSZeroRect];
         self.wrapperView.translatesAutoresizingMaskIntoConstraints = NO;
         [self addObserver:self forKeyPath:@"view" options:0 context:nil];
         [self addObserver:self forKeyPath:@"wrapperView.frame" options:0 context:nil];
