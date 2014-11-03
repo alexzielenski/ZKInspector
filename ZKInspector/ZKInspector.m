@@ -70,15 +70,21 @@ const void *kRowViewContext;
 }
 
 - (void)drawRect:(NSRect)dirtyRect {
-    [[NSColor lightGrayColor] set];
-    
     NSUInteger row = [self.outlineView rowForItem:self.item];
     if (!self.item.isExpanded) {
+        [[NSColor lightGrayColor] set];
+        NSRectFill(NSMakeRect(0, NSMaxY(self.bounds) - 2, self.bounds.size.width, 1));
+        
+        [[[NSColor whiteColor] colorWithAlphaComponent:0.3] set];
         NSRectFill(NSMakeRect(0, NSMaxY(self.bounds) - 1, self.bounds.size.width, 1));
     }
     
     if (row != 0) {
+        [[NSColor lightGrayColor] set];
         NSRectFill(NSMakeRect(0, 0, self.bounds.size.width, 1));
+        
+        [[[NSColor whiteColor] colorWithAlphaComponent:0.3] set];
+        NSRectFill(NSMakeRect(0, 1, self.bounds.size.width, 1));
     }
 }
 
